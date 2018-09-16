@@ -5,19 +5,27 @@
 HHOOK _hook;
 BOOL _bool;
 int counter;
+bool press;
 int Save(int counter);
 
 
 // When keyboard key is pressed CALLBACK
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
+
     if (nCode >= 0)
     {
+        
         // Valid input key down
-        if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
+        if ((wParam == WM_KEYDOWN || wParam == WM_KEYDOWN) && !press)
         {
+            press = true;
             counter += 1;
             Save(counter);
+        }
+        if(wParam == WM_KEYUP || wParam == WM_SYSKEYUP)
+        {
+            press = false;
         }
     }
     return CallNextHookEx(_hook, nCode, wParam, lParam);
